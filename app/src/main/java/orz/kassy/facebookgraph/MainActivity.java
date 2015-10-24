@@ -31,9 +31,6 @@ import com.facebook.login.widget.LoginButton;
 
 import net.vvakame.util.jsonpullparser.JsonFormatException;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,17 +54,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("user_friends,user_posts");
-
-//        LoginManager.getInstance().logInWithPublishPermissions(
-//                this,
-//                Arrays.asList("publish_actions,publish_actions,read_stream"));
-//        LoginManager.getInstance().logInWithPublishPermissions(
-//                this,
-//                Arrays.asList("read_stream"));
-
-        // If using in a fragment
-        //loginButton.setFragment(this);
-        // Other app specific specialization
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -151,37 +137,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.btnGraph:
-//                final AccessToken accessToken = AccessToken.getCurrentAccessToken();
-//                if (accessToken == null) {
-//                    Log.e(TAG, "access token = null");
-//                }
-//                Log.i(TAG, "access token = " + accessToken);
-//
-//                GraphRequest request = GraphRequest.newMeRequest(
-//                        accessToken,
-//                        new GraphRequest.GraphJSONObjectCallback() {
-//                            @Override
-//                            public void onCompleted(
-//                                    JSONObject object,
-//                                    GraphResponse response) {
-//                                // Application code
-//                                Log.i(TAG, "onComplete");
-//                                // {"id":"914329871988909","name":"Kazutoshi Kashimoto","link":"https:\/\/www.facebook.com\/app_scoped_user_id\/914329871988909\/"}
-//                                // {"id":"914329871988909","name":"Kazutoshi Kashimoto","link":"https:\/\/www.facebook.com\/app_scoped_user_id\/914329871988909\/"}, error: null}
-//                            }
-//                        });
-//                Bundle parameters = new Bundle();
-//                parameters.putString("fields", "id,name,link,birthday,gender");
-//                request.setParameters(parameters);
-//                request.executeAsync();
-//                break;
-//
             case R.id.btnGraph:
                 /* make the API call */
                 new GraphRequest(
                         AccessToken.getCurrentAccessToken(),
-                        //"/me/friends",
                         "/me/feed",
                         null,
                         HttpMethod.GET,
@@ -209,42 +168,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ).executeAsync();
                 break;
 
-//            case R.id.btnGraph3:
-//                GraphRequestBatch batch = new GraphRequestBatch(
-////                        GraphRequest.newMeRequest(
-////                                AccessToken.getCurrentAccessToken(),
-////                                new GraphRequest.GraphJSONObjectCallback() {
-////                                    @Override
-////                                    public void onCompleted(
-////                                            JSONObject jsonObject,
-////                                            GraphResponse response) {
-////                                        // Application code for user
-////                                        Log.i(TAG,"onComplete31");
-////                                        // {Response:  responseCode: 200, graphObject: {"name":"Kazutoshi Kashimoto","id":"914329871988909"}, error: null}
-////                                    }
-////                                }),
-//                        GraphRequest.newMyFriendsRequest(
-//                                AccessToken.getCurrentAccessToken(),
-//                                new GraphRequest.GraphJSONArrayCallback() {
-//                                    @Override
-//                                    public void onCompleted(
-//                                            JSONArray jsonArray,
-//                                            GraphResponse response) {
-//                                        // Application code for users friends
-//                                        Log.i(TAG, "onComplete3");
-//                                        //{Response:  responseCode: 200, graphObject: {"data":[],"summary":{"total_count":322}}, error: null}
-//                                    }
-//                                })
-//                );
-//                batch.addCallback(new GraphRequestBatch.Callback() {
-//                    @Override
-//                    public void onBatchCompleted(GraphRequestBatch graphRequests) {
-//                        // Application code for when the batch finishes
-//                    }
-//                });
-//                batch.executeAsync();
-//                break;
-//
         }
     }
 
