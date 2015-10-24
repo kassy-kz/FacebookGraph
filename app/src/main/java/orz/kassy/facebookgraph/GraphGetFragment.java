@@ -1,32 +1,22 @@
 package orz.kassy.facebookgraph;
 
+
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 
 import net.vvakame.util.jsonpullparser.JsonFormatException;
 
@@ -35,103 +25,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Graph1Activity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class GraphGetFragment extends Fragment implements View.OnClickListener {
 
-    private static final String TAG = "MainActivity";
-    LoginButton loginButton;
-    CallbackManager callbackManager;
+    private static final String TAG = "GraphGet";
     private ListView mListView1;
     private ArrayList<CustomListItem> mItemList1;
     private CustomListAdapter mListAdapter;
 
+
+    public GraphGetFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_graph_get, container, false);
 
-        setContentView(R.layout.activity_graph1);
-
-        loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions("user_friends,user_posts");
-
-        callbackManager = CallbackManager.Factory.create();
-
-        // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                // App code
-            }
-
-            @Override
-            public void onCancel() {
-                // App code
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                // App code
-            }
-        });
-
-
-        LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        // App code
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        // App code
-                    }
-
-                    @Override
-                    public void onError(FacebookException exception) {
-                        // App code
-                    }
-                }
-        );
-
-        Button btnGraph = (Button) findViewById(R.id.btnGraph);
+        Button btnGraph = (Button) view.findViewById(R.id.btnGraph);
         btnGraph.setOnClickListener(this);
 
-        mListView1 = (ListView) findViewById(R.id.listView);
+        mListView1 = (ListView) view.findViewById(R.id.listView);
         mItemList1 = new ArrayList<CustomListItem>();
-        mListAdapter = new CustomListAdapter(this, R.layout.view_custom_list_item, mItemList1);
+        mListAdapter = new CustomListAdapter(getActivity(), R.layout.view_custom_list_item, mItemList1);
         mListView1.setAdapter(mListAdapter);
-        mListView1.setOnItemClickListener(this);
+        //mListView1.setOnItemClickListener(this);
 
+        return view;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
 
     @Override
     public void onClick(View view) {
@@ -168,11 +93,6 @@ public class Graph1Activity extends AppCompatActivity implements View.OnClickLis
                 break;
 
         }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        //TODO 処理
     }
 
     /**
@@ -213,7 +133,7 @@ public class Graph1Activity extends AppCompatActivity implements View.OnClickLis
 
         public View getView(int position, View convertView, ViewGroup parent) {
             if(convertView == null) {
-                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(mLayoutResId, null);
             }
             CustomListItem item = (CustomListItem) getItem(position);

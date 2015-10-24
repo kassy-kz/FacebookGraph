@@ -37,13 +37,14 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.facebook.android:facebook-android-sdk:4.6.0'
 
-    compile "net.vvakame:jsonpullparser-core:1.6.+"
     apt "net.vvakame:jsonpullparser-apt:1.6.+"
 
+
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.6.0'
+    compile 'net.vvakame:jsonpullparser-core:1.6.+'
     compile 'com.fasterxml.jackson.core:jackson-core:2.3.4'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.4'
-
+    compile 'com.android.support:design:22.2.1'
 }
