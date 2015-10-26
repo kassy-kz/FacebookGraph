@@ -2,9 +2,10 @@ package orz.kassy.facebookgraph;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 
-import net.vvakame.util.jsonpullparser.JsonFormatException;
-
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GraphPostFragment extends Fragment implements View.OnClickListener {
+public class PhotoPostFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "GraphGet";
     private ListView mListView1;
@@ -37,17 +36,23 @@ public class GraphPostFragment extends Fragment implements View.OnClickListener 
     private CustomListAdapter mListAdapter;
 
 
-    public GraphPostFragment() {
+    public PhotoPostFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_photo_post, container, false);
+        View view = inflater.inflate(R.layout.fragment_graph_get, container, false);
 
         Button btnGraph = (Button) view.findViewById(R.id.btnGraph);
         btnGraph.setOnClickListener(this);
+
+        mListView1 = (ListView) view.findViewById(R.id.listView);
+        mItemList1 = new ArrayList<CustomListItem>();
+        mListAdapter = new CustomListAdapter(getActivity(), R.layout.view_custom_list_item, mItemList1);
+        mListView1.setAdapter(mListAdapter);
+        //mListView1.setOnItemClickListener(this);
 
         return view;
     }
@@ -58,17 +63,23 @@ public class GraphPostFragment extends Fragment implements View.OnClickListener 
         switch (view.getId()) {
             case R.id.btnGraph:
 
+                Bitmap photo = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
                 Bundle params = new Bundle();
-                params.putString("message", "テスト444");
-                /* make the API call */
+                params.putByteArray("source", byteArray);
+
                 new GraphRequest(
                         AccessToken.getCurrentAccessToken(),
-                        "/me/feed",
+                        "/me/photos",
                         params,
                         HttpMethod.POST,
                         new GraphRequest.Callback() {
                             public void onCompleted(GraphResponse response) {
                                 Toast.makeText(getActivity(), "completed", Toast.LENGTH_SHORT).show();
+
                             }
                         }
                 ).executeAsync();

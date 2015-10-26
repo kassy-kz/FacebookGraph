@@ -22,6 +22,10 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.facebook.share.model.ShareOpenGraphAction;
+import com.facebook.share.model.ShareOpenGraphContent;
+import com.facebook.share.model.ShareOpenGraphObject;
+import com.facebook.share.widget.ShareDialog;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions("user_friends,user_posts");
+        loginButton.setReadPermissions("user_friends,user_posts,user_photos,publish_actions");
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -152,8 +156,40 @@ public class MainActivity extends AppCompatActivity
                     .commit();
 
         } else if (id == R.id.nav_slideshow) {
+            Fragment fragment = new PhotoPostFragment();
+            Bundle args = new Bundle();
+            // args.putInt(MainFragment.ARG_PLANET_NUMBER, position);
+            fragment.setArguments(args);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack("aaa")
+                    .commit();
 
         } else if (id == R.id.nav_manage) {
+            // Create an object
+            ShareOpenGraphObject object = new ShareOpenGraphObject.Builder()
+                    .putString("og:type", "books.book")
+                    .putString("og:title", "A Game of Thrones")
+                    .putString("og:description", "In the frozen wastes to the north of Winterfell, sinister and supernatural forces are mustering.")
+                    .putString("books:isbn", "0-553-57340-3")
+                    .build();
+
+
+            // Create an action
+            ShareOpenGraphAction action = new ShareOpenGraphAction.Builder()
+                    .setActionType("books.reads")
+                    .putObject("book", object)
+                    .build();
+
+            // Create the content
+            ShareOpenGraphContent content = new ShareOpenGraphContent.Builder()
+                    .setPreviewPropertyName("book")
+                    .setAction(action)
+                    .build();
+
+            ShareDialog.show(this, content);
 
         } else if (id == R.id.nav_share) {
 
