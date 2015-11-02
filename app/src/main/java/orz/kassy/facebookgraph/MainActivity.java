@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack("aaa")
                     .commit();
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_photoPost) {
             Fragment fragment = new PhotoPostFragment();
             Bundle args = new Bundle();
             // args.putInt(MainFragment.ARG_PLANET_NUMBER, position);
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack("aaa")
                     .commit();
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_shareDialog) {
             // Create an object
             ShareOpenGraphObject object = new ShareOpenGraphObject.Builder()
                     .putString("og:type", "books.book")
@@ -191,7 +191,17 @@ public class MainActivity extends AppCompatActivity
 
             ShareDialog.show(this, content);
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_profile) {
+            Fragment fragment = new ProfileFragment();
+            Bundle args = new Bundle();
+            // args.putInt(MainFragment.ARG_PLANET_NUMBER, position);
+            fragment.setArguments(args);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack("aaa")
+                    .commit();
 
         } else if (id == R.id.nav_send) {
 
